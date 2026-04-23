@@ -31,7 +31,7 @@ VDI web clients have limited abilities to integrate remote application windows w
 
 Several VDI clients, including Citrix and Omnissa, have reported that their users strongly desire an integrated experience as their work is increasingly happening both on local client and remote host devices.
 
-Unfortunately, the web platform offers no means for web applications to signal the user agent when users interact with remote application (or custom) window controls. This platform gap create disconnects between local and remote windows, and prevent web VDI clients from offering functionality expected by users.
+Unfortunately, the web platform offers no means for web applications to signal the user agent when users interact with remote application (or custom) window controls. This platform gap creates a disconnect between local and remote windows, and prevents web VDI clients from offering functionality expected by users.
 
 The missing capabilities also prevent a broader set of web applications from offering compelling window management experiences for their users.
 
@@ -234,7 +234,7 @@ A new `resizable` CSS media feature indicates whether the provided window object
         * [change event](https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList/change_event) for free (don’t need to specify a separate `displaystatechange` event)
     * CONs:
         * Limited avenues for permission gating:
-            * Always yield `normal` for `display-state`, `true` for `resizable` without permission if the proposal was modified a permission was required to read the values
+            * Always yield `normal` for `display-state`, `true` for `resizable` without permission if the proposal was modified and a permission was required to read the values
 * Sync `window.displayState` and `window.resizable` attributes and a `displaystatechange` event on `window`
     * PROs:
         * Straightforward and convenient
@@ -243,7 +243,7 @@ A new `resizable` CSS media feature indicates whether the provided window object
     * CONs:
         * Increases the fingerprinting surface of the user agent
         * Adds new attributes on a global interface
-        * Limited avenues for permission gating if the proposal was modified a permission was required to read the values:
+        * Limited avenues for permission gating if the proposal was modified and a permission was required to read the values:
             * Always yield `normal` for `displayState`, `true` for `resizable` without permission
             * Do not fire `displaystatechange` without permission, or fire it immediately when a handler is added with a "permission missing" error.
 * Async `await window.getDisplayState()` yields the current window display state value (& similar `await window.getResizable()` yields whether the window is resizable)
@@ -291,6 +291,11 @@ An alternative to the JS API would be to extend `app-region` CSS to support mini
 ### Replacing window.setResizable() with manifest property and window.open() feature (static vs. dynamic resizable)
 
 The window resizable property could be set statically during window creation (via either manifest property or window.open() feature), but this doesn’t cover all of the VDI clients use-cases as the property could change dynamically during window life-time (since they display remote windows).
+
+
+### Introduction of window.onmove event to obviate the need for polling window positions
+
+A `move` event on `window` was initially suggested as a part of this proposal. It was rejected because of privacy concerns (see discussions [here](https://github.com/w3c/csswg-drafts/issues/7693) and [here](https://github.com/WebKit/standards-positions/issues/289)).
 
 ## Security & Privacy Considerations
 
